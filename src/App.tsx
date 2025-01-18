@@ -1,6 +1,7 @@
-
 import Layout from "./Layout";
 import Home from "./pages/Home";
+import SignupPage from "./pages/signup";
+import LoginPage from "./pages/login";
 import {
   Route,
   RouterProvider,
@@ -15,7 +16,8 @@ const router = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route path="" element={<Home />} />
       </Route>
-      
+      <Route path="login" element={<LoginPage />} />
+      <Route path="signup" element={<SignupPage />} />
     </>
   )
 );
