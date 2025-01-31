@@ -32,6 +32,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
           {placeholder.toUpperCase()}
         </label>
       </div>
+
       <div className="flex items-center relative">
         <Field
           className={`w-full px-5 py-3 rounded-lg font-medium border-2 text-black placeholder-gray-600  border-transparent  text-sm focus:outline-none focus:border-2 focus:outline bg-gray-100`}
@@ -46,11 +47,10 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
           {eyeIcon}
         </div>
       </div>
-      <ErrorMessage
-        className="text-red-500 text-sm mt-1"
-        name={name}
-        component="span"
-      />
+
+
+      <ErrorMessage className="text-red-500 text-sm mt-1" name={name} component="span" />
+      
     </>
   );
 };

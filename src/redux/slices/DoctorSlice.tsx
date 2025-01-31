@@ -22,7 +22,7 @@ interface DoctorState {
         return { ...state, ...action.payload };
         
       },
-      // clearDoctor: () => initialState,
+
       clearDoctorDetials: (state) => {
         
         state.name = null

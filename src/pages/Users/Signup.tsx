@@ -8,7 +8,7 @@ import { Formik, Form , Field } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import { signup } from '../../api/UserAuthentication';
+import { signup } from '../../api/auth/UserAuthentication';
 
 import { signUp } from '../../@types/SignupType';
 

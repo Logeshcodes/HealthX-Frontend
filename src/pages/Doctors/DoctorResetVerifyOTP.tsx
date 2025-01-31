@@ -2,7 +2,8 @@ import  { useState , useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { verifyResetOtp , forgotResendOtp } from '../../api/DoctorAuthentication';
+import { verifyResetOtp , forgotResendOtp } from '../../api/auth/DoctorAuthentication';
+
 
 const DoctorResetVerificationOTP = () => {
   

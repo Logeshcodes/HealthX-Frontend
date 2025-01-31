@@ -2,7 +2,7 @@ import  { useState , useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { resendOtp , verifyOtp } from '../../api/UserAuthentication';
+import { resendOtp , verifyOtp } from '../../api/auth/UserAuthentication';
 
 
 const verificationOTP = () => {

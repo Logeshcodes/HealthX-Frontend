@@ -3,7 +3,7 @@ import { Card } from "../../components/Card"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux";
 import {toast} from 'react-toastify'
-import { login } from "../../api/UserAuthentication"
+import { login } from "../../api/auth/UserAuthentication"
 import { setUser } from "../../redux/slices/userSlice";
 import { Login } from "../../@types/LoginData";
 import { useNavigate } from "react-router-dom";

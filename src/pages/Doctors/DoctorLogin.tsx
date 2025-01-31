@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../../@types/LoginData";
 import { setDoctor } from "../../redux/slices/DoctorSlice";
-import { login } from "../../api/DoctorAuthentication";
+import { login } from "../../api/auth/DoctorAuthentication";
 
 // Validation Schema
 const loginSchema = Yup.object().shape({
@@ -59,7 +59,7 @@ const DoctorLogin = () => {
 
         // })))
 
-        // Redirect to home page after a  delay
+       
         setTimeout(() => {
           navigate(`/doctor`);
         }, 1000);

@@ -1,48 +1,39 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import { Suspense } from "react";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import BrickLoader from "../components/BrickLoader";
 import Dashboard from "../pages/Admin/Dashboard";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "../Protecter/AdminProtectedRoute";
 import Department from "../pages/Admin/Department";
 import UserList from "../pages/Admin/UserList";
 import EditDepartmentForm from "../pages/Admin/EditDepartment";
 import { useState } from "react";
 import AdminLayout from "../layouts/AdminLayout";
 import AddDepartmentForm from "../pages/Admin/AddDepartment";
+import DoctorsListTable from "../pages/Admin/VerifiedDoctorList";
+import RequestedDoctorList from "../pages/Admin/RequestedDoctorList";
 
 const AdminRouter = () => {
-
-
-    const [isDarkMode] = useState(true);
-  
-
+  const [isDarkMode] = useState(true);
 
   return (
     <Suspense fallback={<BrickLoader />}>
       <Routes>
-       
-        <Route path="login" element={  localStorage.getItem("isAdmin") === "true" ? ( <Navigate to="/admin/dashboard" />):(<AdminLogin />) }/>
+        
+        <Route path="login" element={ <AdminLogin />}/>
 
-        <Route path="dashboard"element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
 
-        <Route path="" element={<AdminLayout />}>
+        <Route element={<ProtectedRoute />}>
+          <Route path="" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard isDarkMode={isDarkMode} />} />
             <Route path="department" element={<Department isDarkMode={isDarkMode} />} />
-        </Route>
-
-        <Route path="" element={<AdminLayout />}>
             <Route path="users" element={<UserList isDarkMode={isDarkMode} />} />
-        </Route>
-
-        <Route path="" element={<AdminLayout />}>
             <Route path="editDepartment" element={<EditDepartmentForm isDarkMode={isDarkMode} />} />
-        </Route>
-
-        <Route path="" element={<AdminLayout />}>
             <Route path="addDepartment" element={<AddDepartmentForm isDarkMode={isDarkMode} />} />
+            <Route path="verifiedDoctors" element={<DoctorsListTable isDarkMode={isDarkMode} />} />
+            <Route path="requestedDoctors" element={<RequestedDoctorList isDarkMode={isDarkMode} />} />
+          </Route>
         </Route>
-
-
       </Routes>
     </Suspense>
   );

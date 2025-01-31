@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Pencil, Trash2, Plus } from 'lucide-react';
-import { getAllDepartment } from '../../api/AdminActionApi';
+import { Pencil, Plus, Search } from 'lucide-react';
+import { getAllDepartment } from '../../api/action/AdminActionApi';
+import { debounce } from 'lodash';
 
 interface DepartmentProps {
   isDarkMode: boolean;
@@ -13,17 +14,22 @@ interface Department {
   createdAt: string;
 }
 
+const ITEMS_PER_PAGE = 5;
+
 const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredDepartments, setFilteredDepartments] = useState<Department[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchDepartments = async () => {
       setLoading(true);
       try {
         const response = await getAllDepartment();
-        console.log('data', response.data);
         setDepartments(response.data.departments || []);
+        setFilteredDepartments(response.data.departments || []);
       } catch (error) {
         console.error('Error fetching departments:', error);
       } finally {
@@ -33,6 +39,27 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
 
     fetchDepartments();
   }, []);
+
+  // Debounced search handler
+  const handleSearch = debounce((query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+    if (query.trim() === '') {
+      setFilteredDepartments(departments);
+    } else {
+      const filtered = departments.filter(dept =>
+        dept.departmentName.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredDepartments(filtered);
+    }
+  }, 300);
+
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredDepartments.length / ITEMS_PER_PAGE);
+  const paginatedDepartments = filteredDepartments.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -54,6 +81,19 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
           </a>
         </div>
 
+        <div className="mb-6 ">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10 bg-gray-800 border-gray-700 text-white w-full p-2 rounded-lg"
+            />
+          </div>
+        </div>
+
         <div className={`rounded-lg overflow-hidden shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
           <table className="w-full">
             <thead>
@@ -72,15 +112,15 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
                     Loading departments...
                   </td>
                 </tr>
-              ) : departments.length > 0 ? (
-                departments.map((dept, index) => (
+              ) : paginatedDepartments.length > 0 ? (
+                paginatedDepartments.map((dept, index) => (
                   <tr
                     key={dept._id}
                     className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} transition-colors duration-150 hover:bg-opacity-50 ${
                       isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
                     }`}
                   >
-                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="px-6 py-4">{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}</td>
                     <td className="px-6 py-4">{dept.departmentName}</td>
                     <td className="px-6 py-4">
                       <span
@@ -93,7 +133,7 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
                         {dept.isListed ? 'Listed' : 'Unlisted'}
                       </span>
                     </td>
-                    <td className="px-6 py-4">{new Date(dept.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">{new Date(dept.createdAt).toLocaleDateString('en-GB')}</td>
                     <td className="px-6 py-4">
                       <div className="flex space-x-3">
                         <button
@@ -108,17 +148,6 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
                             <Pencil className="h-4 w-4" />
                           </a>
                         </button>
-
-                        {/* <button
-                          className={`p-2 rounded-full transition-all duration-200 ${
-                            isDarkMode
-                              ? 'hover:bg-red-500 hover:bg-opacity-20 text-red-400 hover:text-red-300'
-                              : 'hover:bg-red-100 text-red-600 hover:text-red-700'
-                          } transform hover:scale-110`}
-                          title="Delete Department"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button> */}
                       </div>
                     </td>
                   </tr>
@@ -126,12 +155,33 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center text-gray-500 py-4">
-                    No Departments are available
+                    No departments found
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-between items-center py-4 px-6">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="text-sm">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

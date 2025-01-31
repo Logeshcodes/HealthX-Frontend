@@ -2,20 +2,20 @@ import axios from 'axios';
 
 
 export const API = axios.create({
+
     baseURL: "http://localhost:5000",
+
     headers: {
       "Content-Type": "application/json",
       withCredentials: true,
-      credentials: 'include',
-      
+      credentials: 'include', 
     },
   });
   
 
 
   
-  API.interceptors.request.use(
-    (config) => {
+  API.interceptors.request.use( (config) => {
       
       const verificationToken= localStorage.getItem("verificationToken");
   
@@ -24,23 +24,27 @@ export const API = axios.create({
       }
       return config;
     },
-    (error) => {
-      console.log(error);
-    }
+
+    (error) => { console.log(error) }
+
   );
 
 
-  API.interceptors.response.use(
-    (response) => {
-      return response;
+  API.interceptors.response.use((response) => {
+
+       return response;
     },
+
     (error) => {
+
       if (error.response) {
         const { data } = error.response;
         console.log(data.message);
       } else {
         console.log(error);
       }
+
       return Promise.reject(error);
+      
     }
   );

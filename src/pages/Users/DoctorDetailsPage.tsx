@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getDoctorDataById } from '../../api/UserActionApi'; // You'll need to create this API call
+import { getDoctorDataById } from '../../api/action/UserActionApi'; 
 
 const DoctorDetailPage = () => {
   const { doctorId } = useParams();
@@ -10,8 +10,8 @@ const DoctorDetailPage = () => {
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
-        const data = await getDoctorDataById(); // Fetch the doctor by ID
-        // const data = await getDoctorDataById(doctorId!); // Fetch the doctor by ID
+        const data = await getDoctorDataById(); 
+      
         setDoctor(data);
       } catch (error) {
         console.log('Error fetching doctor details:', error);

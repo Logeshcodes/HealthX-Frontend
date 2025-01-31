@@ -1,5 +1,5 @@
-import { API } from "../service/axios";
-import authentictaionRoutes from "../@types/endPoints/authEndPoints";
+import { API } from "../../service/axios";
+import authentictaionRoutes from "../../@types/endPoints/authEndPoints";
 
 
 

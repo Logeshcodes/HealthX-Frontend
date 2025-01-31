@@ -1,7 +1,7 @@
 
-import { userData } from "../@types/UserDataType";
-import { API } from "../service/axios";
-import authentictaionRoutes from "../@types/endPoints/authEndPoints";
+import { userData } from "../../@types/UserDataType";
+import { API } from "../../service/axios";
+import authentictaionRoutes from "../../@types/endPoints/authEndPoints";
 
 
 export const adminLogin = async (userData: userData): Promise<any> => {

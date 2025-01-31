@@ -1,6 +1,6 @@
-import { API } from "../service/axios";
+import { API } from "../../service/axios";
 
-import UserRouters from "../@types/endPoints/userEndPoints";
+import UserRouters from "../../@types/endPoints/userEndPoints";
 
 
 

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Loader from '../../components/Common/Fallbacks/Loader';
 import InputField from './common/inputField';
 import { useNavigate } from 'react-router-dom';
-import { verifyEmail } from '../../api/UserAuthentication';
+import { verifyEmail } from '../../api/auth/UserAuthentication';
 
 const ForgotPassword = () => {
 

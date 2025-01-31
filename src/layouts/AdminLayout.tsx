@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 import { Layout, UserCheck, Users, Warehouse, CircleUserIcon, LogOut } from "lucide-react";
 
 const AdminLayout = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true); // Manage sidebar state globally
-  const [isDarkMode, setDarkMode] = useState(true); // Manage dark mode globally
-  const [activeTab, setActiveTab] = useState(""); // Track active sidebar tab
+  const [isSidebarOpen, setSidebarOpen] = useState(true); 
+  const [isDarkMode, setDarkMode] = useState(true); 
+  const [activeTab, setActiveTab] = useState(""); 
   const navigate = useNavigate();
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -24,8 +24,8 @@ const AdminLayout = () => {
   // Sidebar items with href
   const sidebarItems = [
     { id: "dashboard", label: "Dashboard", icon: Layout, href: "/admin/dashboard" },
-    { id: "verified-doctors", label: "Verified Doctors", icon: UserCheck, href: "/admin/verified-doctors" },
-    { id: "requested-doctors", label: "Requested Doctors", icon: Users, href: "/admin/requested-doctors" },
+    { id: "verifiedDoctors", label: "Verified Doctors", icon: UserCheck, href: "/admin/verifiedDoctors" },
+    { id: "requestedDoctors", label: "Requested Doctors", icon: Users, href: "/admin/requestedDoctors" },
     { id: "departments", label: "Departments", icon: Warehouse, href: "/admin/department" },
     { id: "users", label: "Users", icon: CircleUserIcon, href: "/admin/users" },
     { id: "logout", label: "Logout", icon: LogOut, action: handleLogout },

@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import PasswordField from './common/passwordField';
-import { resetPassword } from '../../api/UserAuthentication';
+import { resetPassword } from '../../api/auth/UserAuthentication';
 
 const ResetPassword = () => {
 

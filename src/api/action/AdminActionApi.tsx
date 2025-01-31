@@ -1,8 +1,8 @@
-import { API } from "../service/axios";
+import { API } from "../../service/axios";
 
-import AdminRoutes from "../@types/endPoints/adminEndPoints";
+import AdminRoutes from "../../@types/endPoints/adminEndPoints";
 
-import { deptData } from "../@types/DeptDataType";
+import { deptData } from "../../@types/DeptDataType";
 
 export const getAllUsers = async (): Promise<any> => {
     try {

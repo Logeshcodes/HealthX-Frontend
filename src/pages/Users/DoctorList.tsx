@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Calendar, ChevronDown } from 'lucide-react';
 import DoctorCard from '../../components/UserComponents/Doctor/DoctorCard';
-import { getDoctorData } from '../../api/UserActionApi';
+import { getDoctorData } from '../../api/action/UserActionApi';
 
 const DoctorListingPage = () => {
   const [doctors, setDoctors] = useState<any[]>([]); // State to store the doctor data

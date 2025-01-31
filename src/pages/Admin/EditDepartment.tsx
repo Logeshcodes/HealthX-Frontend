@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getDepartmentById, updateDepartment } from '../../api/AdminActionApi';
+import { getDepartmentById, updateDepartment } from '../../api/action/AdminActionApi';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface EditDepartmentFormProps {

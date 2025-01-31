@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import PasswordField from '../Users/common/passwordField';
 import InputField from '../Users/common/inputField';
 import { DoctorRegister } from '../../@types/DoctorSignupType';
-import { signup } from '../../api/DoctorAuthentication';
+import { signup } from '../../api/auth/DoctorAuthentication';
 import Loader from '../../components/Common/Fallbacks/Loader';
 
 const DoctorSignup = () => {

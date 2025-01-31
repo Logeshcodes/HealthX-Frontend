@@ -1,5 +1,5 @@
-import DoctorRoutes from "../@types/endPoints/doctorEndPoints";
-import { API } from "../service/axios";
+import DoctorRoutes from "../../@types/endPoints/doctorEndPoints";
+import { API } from "../../service/axios";
 
 export const getInstructorData = async (email: string | null): Promise<any> => {
   try {

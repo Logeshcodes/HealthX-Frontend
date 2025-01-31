@@ -14,16 +14,33 @@ const DoctorRouter = () => {
   return (
     <Suspense fallback={<BrickLoader />}>
         <Routes>
-            <Route path="/" element={<DoctorLayout />}>
-                <Route path="" element={<Home />} />
-            </Route>
-            <Route path="login" element={<DoctorLogin />} />
+
+
+            {/* auth */}
+           
+
+            
             <Route path="register" element={<DoctorSignup />} />
             <Route path="verify_otp" element={<DoctorVerificationOTP />} />
 
+            <Route path="login" element={<DoctorLogin />} />
             <Route path="/verifyEmail" element={<DoctorForgotPassword />} />
             <Route path="/forgot-password-otp" element={<DoctorResetVerificationOTP />} />
             <Route path="/resetPassword" element={<DoctorResetPassword />} />
+
+
+            {/* auth */}
+
+
+
+
+            {/* nav-item */}
+
+            <Route path="/" element={<DoctorLayout />}>
+                <Route path="" element={<Home />} />
+            </Route>
+
+            {/* nav-item */}
 
             
         </Routes>
