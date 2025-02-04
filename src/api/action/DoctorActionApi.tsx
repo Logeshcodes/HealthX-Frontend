@@ -1,11 +1,11 @@
 import DoctorRoutes from "../../@types/endPoints/doctorEndPoints";
 import { API } from "../../service/axios";
 
-export const getInstructorData = async (email: string | null): Promise<any> => {
+export const getDoctorData = async (email: string | null): Promise<any> => {
   try {
     console.log("getInsssss")
     const response = await API.get(
-      // `/user/instructors/${email}`
+      
       `${DoctorRoutes.getDoctorData}${email}`
     );
     console.log(response.data,"getInsssss")

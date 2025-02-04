@@ -2,15 +2,14 @@ import  { useState , useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { verifyResetOtp , forgotResendOtp } from '../../api/auth/DoctorAuthentication';
+import { resendOtp , verifyOtp } from '../../../api/auth/DoctorAuthentication';
 
 
-const DoctorResetVerificationOTP = () => {
-  
+const DoctorVerificationOTP = () => {
+
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
   const [counter, setCounter] = useState<number>(10);
   const [resendAtive,setResendActive]=useState(false)
- 
 
   const navigate = useNavigate();
 
@@ -20,89 +19,95 @@ const DoctorResetVerificationOTP = () => {
 
   useEffect(()=>{
     
-     
-    if(counter>0){
-      const timer=setInterval(()=>{
-        setCounter(prev=>prev-1)
-      },1000)
-      return()=>    clearInterval(timer)
-    }else{
-      setResendActive(true)
-    }
-   
-    }
-
-  ,[counter,otp])
+        if(counter>0){
+          const timer=setInterval(()=>{
+            setCounter(prev=>prev-1)
+          },1000)
+          return()=>    clearInterval(timer)
+        }else{
+          setResendActive(true)
+        }
+    },[counter,otp])
 
 
 
+    const handleResend = async() => {
 
-   const handleResend=async()=>{
-    setResendActive(false)
-    setCounter(10)
-
-    let email= localStorage.getItem("ForgotPassEmail")|| ""
-    const respone=await forgotResendOtp(email)
-
-    if(respone.success){
-      toast.success(respone.message)
-    }else{
-      toast.error(respone.message)
-    }
-    
-    
-  }
-
-
-  const handleChange=(e:React.ChangeEvent<HTMLInputElement>,index:number)=>{
-    
-    const value=e.target.value
-
-    const newOTP= [...otp]
-    newOTP[index]=value
-    setOtp(newOTP)
-
-    if(value && index<otp.length-1){
-      const nextSibling=document.getElementById(`otpInput-${index+1}`)
-      nextSibling?.focus()
-    }else if (!value && index > 0) {
-      const prevSibling = document.getElementById(`otpInput-${index - 1}`);
-      prevSibling?.focus();
-    }
-
-    
-
-  }
-
-
-  const handleKeyDown=(e:React.KeyboardEvent<HTMLInputElement>,index:number)=>{
-    if(e.key==="Backspace" && !otp[index] && index>0){
-      document.getElementById(`otpInput-${index-1}`)?.focus()
-    }
-  }
-
-
-
-  const handleSubmit=async ()=>{
-    let OTP=otp.join("")
-    if(OTP.length==4){
-      console.log("submit Clicked")
-    }else{
-     toast.error("enter full OTP")
-      return 
-    }
-    let email= localStorage.getItem("ForgotPassEmail")|| ""
-    let response=await verifyResetOtp(email,OTP)
-    if(response.success){
-      toast.success(response.message)
+      setResendActive(false)
+      setCounter(10)
+  
+      let email= localStorage.getItem("email")
       
-      navigate('/doctor/resetPassword')
-
-    }else{
-      toast.error(response.message)
+      if(email){
+        const respone=await resendOtp(email)
+        if(respone.success){
+          toast.success(respone.message)
+        }else{
+          toast.error(respone.message)
+        }
+      }else{
+        toast.error("Validation Token expired ! Redirecting....")
+       
+        navigate('/verify_otp')
+  
+      }
+      
     }
+
+
+    const handleChange=(e:React.ChangeEvent<HTMLInputElement>,index:number)=>{
     
-  }
+      const value=e.target.value
+  
+      const newOTP= [...otp]
+      newOTP[index]=value
+      setOtp(newOTP)
+  
+      if(value && index<otp.length-1){
+        const nextSibling=document.getElementById(`otpInput-${index+1}`)
+        nextSibling?.focus()
+      }else if (!value && index > 0) {
+        const prevSibling = document.getElementById(`otpInput-${index - 1}`);
+        prevSibling?.focus();
+      }
+    }
+
+
+
+    const handleKeyDown=(e:React.KeyboardEvent<HTMLInputElement>,index:number)=>{
+      if(e.key==="Backspace" && !otp[index] && index>0){
+        document.getElementById(`otpInput-${index-1}`)?.focus()
+      }
+    }
+
+
+
+
+    const handleSubmit=async ()=>{
+      let OTP=otp.join("")
+      if (OTP.length === 4) {
+        console.log("Submit clicked");
+      } else {
+        toast.error("Please enter the complete OTP");
+        return;
+      }
+      
+      
+      let response=await verifyOtp(OTP)
+      if(response.success){
+        toast.success(response.message)
+        localStorage.removeItem('verificationToken')
+        localStorage.removeItem('email')
+        setTimeout(()=>{
+          navigate('/doctor/login')
+          
+        },1000)
+  
+      }else{
+        toast.error(response.message)
+      }
+      
+    }
 
 
 
@@ -176,7 +181,7 @@ const DoctorResetVerificationOTP = () => {
         <div className="hidden md:block w-1/2 bg-gradient-to-br from-purple-400 to-purple-600 p-12">
           <div className="h-full flex items-center justify-center">
             <img
-              src="../../../Login-template.png"
+              src="../../../doctor-img.png"
               alt="Reset Password"
               className="rounded-2xl max-w-full"
             />
@@ -187,4 +192,4 @@ const DoctorResetVerificationOTP = () => {
   );
 };
 
-export default DoctorResetVerificationOTP;
+export default DoctorVerificationOTP;

@@ -93,7 +93,7 @@ const ResetPassword = () => {
           validationSchema={resetPasswordSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting }) => (
+          {() => (
             <Form className="space-y-6 my-4 flex flex-col justify-center">
              
               <div>

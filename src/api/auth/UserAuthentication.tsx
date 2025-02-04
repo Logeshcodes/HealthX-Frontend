@@ -6,18 +6,7 @@ import { userData } from "../../@types/UserDataType"
 
 
 
-// export const UserGoogleLogin = async (loginData:object)=>{
-//     try {
-//         const response = await API.post(authentictaionRoutes.googleLogin_user, loginData,{
-//           withCredentials:true
-//         })
-//         return response.data
-//     } catch (error:any) {
-//         return error
-//     }
-//   }
 
-// user-SignUp 
 
 
   export const signup = async (userData: userData): Promise<any> => {
@@ -78,9 +67,9 @@ import { userData } from "../../@types/UserDataType"
       const response = await API.post(authentictaionRoutes.login_user, {
         email,password , role 
       }
-      // , {
-      //   withCredentials: true, 
-      // }
+      , {
+        withCredentials: true, 
+      }
     );
       console.log(response.data, "response login");
       return response.data;
@@ -164,6 +153,23 @@ export const resetPassword = async (password: string): Promise<any> => {
     );
     console.log(response.data, "response passwordReset");
     return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const logout = async (): Promise<any> => {
+  try {
+    const response = await API.post(
+      authentictaionRoutes.logout_user,
+      {},
+      {
+        withCredentials: true, 
+      }
+    );
+    return response;
   } catch (error) {
     throw error;
   }

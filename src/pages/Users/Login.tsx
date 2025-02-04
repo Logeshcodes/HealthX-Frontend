@@ -46,41 +46,6 @@ const LoginPage = () => {
 
 
 
-
-
-
-  // const googleSubmit = async (credentialResponse: any) => {
-  //   try {
-  //     const decoded : any = jwtDecode(credentialResponse.credential);
-  //     const response = await UserGoogleLogin({
-  //       name: decoded.name,
-  //       email: decoded.email,
-  //       password: decoded.sub,
-  //     });
-
-  //     const user = response?.user;
-  //     if (response) {
-  //       dispatch(
-  //         setUser({
-  //           userId: user._id,
-  //           email: user.email,
-  //           role: user.is_blocked,
-  //           isBlocked: user.isBlocked,
-  //         })
-  //       );
-  //       toast.success(response.message);
-  //       navigate("/home") ;
-  //     } else {
-  //       const { message } = response.response?.data;
-  //       toast.error(message);
-      
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-
   const onSubmit = async (data: Login) => {
     try {
       // Perform the login request
@@ -93,14 +58,15 @@ const LoginPage = () => {
       if (user) {
         // Store user data in localStorage and show success toast
         localStorage.setItem("user", JSON.stringify(user));
-        toast.success("Welcome to HealthX");
+        toast.success(response?.message);
+        // toast.success("Welcome to HealthX");
         console.log('user data ___________>', user)
 
         dispatch((setUser({
-          userId: user._id,
+          name : user.name ,
           email: user.email,
           role: user.role,
-          isBlocked: user.isBlocked
+          profilePicture : user.profilePicture ,
         })))
 
         // Redirect to home page after a  delay

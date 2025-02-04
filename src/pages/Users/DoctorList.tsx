@@ -3,9 +3,13 @@ import { Search, Calendar, ChevronDown } from 'lucide-react';
 import DoctorCard from '../../components/UserComponents/Doctor/DoctorCard';
 import { getDoctorData } from '../../api/action/UserActionApi';
 
+
+
 const DoctorListingPage = () => {
-  const [doctors, setDoctors] = useState<any[]>([]); // State to store the doctor data
-  const [loading, setLoading] = useState<boolean>(true); // State for loading indicator
+  const [doctors, setDoctors] = useState<any[]>([]); 
+  const [loading, setLoading] = useState<boolean>(true); 
+  
+
 
   useEffect(() => {
     const fetchDoctors = async () => {

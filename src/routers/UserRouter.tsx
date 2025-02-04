@@ -14,7 +14,7 @@ import DoctorListingPage from '../pages/Users/DoctorList';
 import About from '../pages/Users/About';
 import PublicRoute from '../Protecter/PublicRoute';
 
-import DepartmentPage from '../pages/Users/DepartmentPage';
+
 
 const UserRouter = () => {
   return (
@@ -29,7 +29,7 @@ const UserRouter = () => {
         <Route path="/user/verifyEmail" element={  <PublicRoute><ForgotPassword /></PublicRoute>  } />
         <Route path="/user/forgot-password-otp" element={  <PublicRoute><ResetVerificationOTP /></PublicRoute>  } />
         <Route path="/user/resetPassword" element={  <PublicRoute><ResetPassword /></PublicRoute>  } />
-        <Route path="/user/department" element={  <DepartmentPage/>  } />
+     
 
         {/* auth */}
 

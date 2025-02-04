@@ -78,7 +78,7 @@ const ForgotPassword = () => {
           validationSchema={emailSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting }) => (
+          {() => (
             <Form className="space-y-6 my-4 flex flex-col justify-center">
               {/* Email Field */}
               <div>

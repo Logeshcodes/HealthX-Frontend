@@ -41,12 +41,14 @@ const AddDepartmentForm: React.FC<AddDepartmentFormProps> = ({ isDarkMode }) => 
     },
     validationSchema: Yup.object({
       departmentName: Yup.string()
-        .trim()
-        .required('Department Name is required')
-        .matches(/\S/, 'Department Name cannot be just spaces'),
+        .min(5, "Department Name must be at least 5 characters long")
+        .matches(/^\S.*/, "Department Name cannot start with a space")  
+        .matches(/.*\S$/, "Department Name cannot end with a space")  
+        .required("Department Name is required"),
     }),
     onSubmit: handleSubmit,
   });
+  
 
   // Handle leading spaces when typing
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

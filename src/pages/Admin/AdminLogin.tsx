@@ -2,9 +2,9 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup"
 import {toast} from 'react-toastify'
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+
 import PasswordField from "../Users/common/passwordField";
-import { ADMIN_EMAIL , ADMIN_PASSWORD } from "../../config/config";
+import { adminLogin } from "../../api/auth/AdminAuthentication";
 
 
 const AdminLogin = () => {
@@ -25,39 +25,26 @@ const AdminLogin = () => {
     password: "",
   };
 
-  const onSubmit = (data: { email: string; password: string }) => {
-    try {
-      if (data.email === ADMIN_EMAIL && data.password === ADMIN_PASSWORD) {
-        toast.success("Welcome, Admin!");
-        localStorage.setItem("isAdmin", "true");
 
-        setTimeout(() => {
-          navigate(`/admin/dashboard`);
-        }, 1000);
-      } else {
-        if (data.email !== ADMIN_EMAIL) {
-          toast.error("Invalid Email");
-        } else {
-          toast.error("Invalid Password");
-        }
-      }
-    } catch (error) {
-      console.error("Error during admin login validation:", error);
-      toast.error("An unexpected error occurred");
+
+  const handleSubmit = async(values: { email: string; password: string }) => {
+
+    const response= await adminLogin(values) ;
+    console.log("Response ...: ",response.data.email)
+    const email = response.data.email ;
+    if(response.success){
+      localStorage.setItem("admin", JSON.stringify(email));
+      toast.success(response.message)
+      navigate('/admin/dashboard')
+     
+    }else{
+      toast.error(response.message)
     }
+    console.log("Form Values:", response);
+    // Add login API logic here
   };
 
 
-
-
- // Check if admin is already logged in
-
-  useEffect(() => {
-  
-    if (localStorage.getItem("isAdmin")) {
-      navigate("/admin/dashboard"); 
-    }
-  }, [navigate]);
   
 
 
@@ -96,7 +83,7 @@ const AdminLogin = () => {
                 Please login to access your dashboard
               </p>
              
-                     <Formik initialValues={initialValues} validationSchema={loginSchema} onSubmit={onSubmit}>
+                     <Formik initialValues={initialValues} validationSchema={loginSchema} onSubmit={handleSubmit}>
              
                        {({ errors, touched }) => (
                          <Form className="space-y-6">
@@ -136,6 +123,7 @@ const AdminLogin = () => {
                            <button
                              type="submit"
                              className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors"
+                            
                            >
                              Login Now
                            </button>

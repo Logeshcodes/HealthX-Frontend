@@ -1,40 +1,50 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface DoctorState {
-    name: string | null;
-    isAuthenticated: boolean | null;
-    role: string | null;
-    id?: string | null;
-  }
+interface doctor {
+    name: string | null,
+    email: string | null,
+    role: string | null,
+    profilePicture: string | null
+}
 
-  const initialState: DoctorState = {
+// Initialize state
+const initialState: doctor = {
     name: null,
-    isAuthenticated: null,
+    email: null,
     role: null,
-    id: null,
-  };
+    profilePicture:null
+};
 
-  const Doctorslice = createSlice({
-    name: "doctorSlice",
+const doctorSlice = createSlice({
+    name: 'doctor',
     initialState,
     reducers: {
-      setDoctor: (state, action: PayloadAction<DoctorState>) => {
-        return { ...state, ...action.payload };
-        
-      },
+        setDoctor: (state, action: PayloadAction<doctor>) => {
+             const {  name, email, role ,profilePicture} = action.payload;
+           
+                state.name = name,
+                state.email = email,
+                state.role = role
+                state.profilePicture=profilePicture
 
-      clearDoctorDetials: (state) => {
-        
-        state.name = null
-        
-        state.role = null
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('doctor', JSON.stringify(state));
+            }
+        },
 
-        if (typeof window !== 'undefined') {
-            localStorage.removeItem('doctor');
+        clearDoctorDetials: (state) => {
+          
+            state.name = null
+            state.email = null
+            state.role = null
+            state.profilePicture=null
+
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('doctor');
+            }
         }
     }
-    },
-  });
-  
-  export const { setDoctor, clearDoctorDetials } = Doctorslice.actions;
-  export default Doctorslice.reducer;
+})
+
+export const { setDoctor, clearDoctorDetials } = doctorSlice.actions
+export default doctorSlice.reducer

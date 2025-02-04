@@ -14,8 +14,8 @@ const AdminRoutes = {
     adminBlockUser: '/user/admin/blockUser/',
 
 
-    adminGetDepartmentById: 'user/admin/departmentById',
-    adminUpdateDepartment: 'user/admin/updateDepartment',
+    adminGetDepartmentByName: '/user/admin/editDepartment',
+    adminUpdateDepartment: '/user/admin/editDepartment',
 
 }
 

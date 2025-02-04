@@ -6,9 +6,12 @@ import { Home, Users, Calendar, Grid, Info, LogIn, ChevronDown, User, MessageSqu
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../redux/reducer/reducer"
-import { clearUserDetials } from "../../redux/slices/userSlice";
+import { logout } from '../../api/auth/UserAuthentication';
+
+import {useDispatch } from "react-redux";
+
+
+import { setUser , clearUserDetials } from "../../redux/slices/userSlice";
 
 
 const navigation = [
@@ -25,30 +28,37 @@ export default function Header() {
 
 
   const [userId, setUserId] = useState(null);
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
-    
-    const userDataString = localStorage.getItem("user"); // localStorage.getItem may return null
+    const userDataString = localStorage.getItem("user");
     if (userDataString) {
       try {
-        const userData = JSON.parse(userDataString);   // Parse only if not null
-        if (userData?.userId ) {
-          setUserId(userData); 
+        const userData = JSON.parse(userDataString);
+        if (userData?.email) {
+          setUserId(userData.email); // Save only email if needed
+          dispatch(setUser({
+            name: userData.name,
+            email: userData.email,
+            role: userData.role,
+            profilePicture: userData.profilePicture,
+          }));
         }
       } catch (error) {
         console.error("Error parsing user data from localStorage:", error);
       }
     }
-  }, []);
+  }, [dispatch]);
 
 
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
 
-  const user = useSelector((state: RootState) => state.UserSlice);
+ 
+
   
 
   useEffect(() => {
@@ -61,16 +71,26 @@ export default function Header() {
     }
   }, []);
 
-  const handleNavigation = (href :  string , id :  string)  => {
+  const handleNavigation = (href: string, id: string) => {
     setActiveTab(id);
-    window.location.href = href; // Navigate to the URL
+    navigate(href); 
   };
+  
 
-  const handleLogout = () => {
-    dispatch(clearUserDetials ());
-    toast.success("Logged out successfully");
-    navigate("/user/login");
+
+  const handleLogout = async () => {
+    try {
+      await logout(); 
+      dispatch(clearUserDetials());
+      toast.success("Logged out successfully");
+      navigate("/user/login");
+    } catch (error: any) {
+      console.error("Error during logout:", error);
+      toast.error("Failed to log out. Please try again.");
+    }
   };
+  
+  
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);

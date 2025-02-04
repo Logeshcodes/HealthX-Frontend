@@ -100,9 +100,22 @@ const DataTable: React.FC<DataTableProps> = ({ doctors, isDarkMode, showActions,
                 <td className="px-4 py-4 text-sm text-gray-300">{doctor.mobile}</td>
                 <td className="px-4 py-4 text-sm text-gray-300">{doctor.email}</td>
                 <td className="px-4 py-4">
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-200 text-pink-600 ">
-                    {doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
-                  </span>
+                    {doctor.status== "Active" && (
+                         <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-200 text-green-600 ">
+                         {doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
+                       </span>
+                    )}
+                    {doctor.status== "Blocked" && (
+                         <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-200 text-red-600 ">
+                         {doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
+                       </span>
+                    )}
+                    {doctor.status== "Requested" && (
+                         <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-200 text-blue-600 ">
+                         {doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
+                       </span>
+                    )}
+                 
                 </td>
                 <td className="px-4 py-4">
                   <span className={`text-sm ${
@@ -116,23 +129,27 @@ const DataTable: React.FC<DataTableProps> = ({ doctors, isDarkMode, showActions,
                 {showActions && (
                   <td className="px-4 py-4">
                     <div className="flex gap-2">
-                      <button className="p-1 text-gray-400 hover:text-gray-200">
-                        <Eye size={16} />
-                      </button>
+                      <button className={`p-2 rounded-full transition-all duration-200 ${isDarkMode
+                          ? 'hover:bg-blue-500 hover:bg-opacity-20 text-blue-400 hover:text-blue-300'
+                        : 'hover:bg-blue-100 text-blue-600 hover:text-blue-700'
+                        } transform hover:scale-110`} title="View Documents"
+                        >
+                        <Eye className="h-4 w-4" />                     
+                        </button>
 
                       {/* Action button with dynamic color */}
-                      <button
+                      {/* <button
                         className={`p-2 rounded-full transition-all duration-200 ${getStatusColor(doctor.status)} transform hover:scale-110`}
                         title="Edit Department"
                       >
                         <a href="/admin/editDepartment">
                           <Pencil className="h-4 w-4" />
                         </a>
-                      </button>
+                      </button> */}
 
                       {/* Status change buttons */}
                       {statusType === 'requested' && doctor.status === 'Requested' && (
-                        <button className="p-1 text-yellow-400 hover:text-yellow-300">
+                        <button className={`p-2 rounded-full transition-all  text-yellow-400 hover:text-yellow-300 duration-200 ${getStatusColor(doctor.status)} transform hover:scale-110`}>
                           <UserRoundPen size={16} />
                         </button>
                       )}
@@ -143,12 +160,12 @@ const DataTable: React.FC<DataTableProps> = ({ doctors, isDarkMode, showActions,
                       )}
 
                       {statusType === 'verified' && doctor.status === 'Active' && (
-                        <button className="p-1 text-green-400 hover:text-green-300">
+                        <button className={`p-2 rounded-full transition-all duration-200 ${getStatusColor(doctor.status)} transform hover:scale-110`}>
                           <UserCheck size={16} />
                         </button>
                       )}
                       {statusType === 'verified' && doctor.status === 'Blocked' && (
-                        <button className="p-1 text-red-400 hover:text-red-300">
+                        <button className={`p-2 rounded-full transition-all duration-200 ${getStatusColor(doctor.status)} transform hover:scale-110`}>
                           <UserX size={16} />
                         </button>
                       )}

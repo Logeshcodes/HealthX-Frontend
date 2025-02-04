@@ -22,15 +22,17 @@ export const adminLogin = async (userData: userData): Promise<any> => {
 
 export const adminLogout = async (): Promise<any> => {
   try {
-    const response = await API.post(
-      authentictaionRoutes.adminLogout,
-      {},
-      { withCredentials: true }
-    ); // 2 parameter is the request part
-    console.log(response.data, "response logout");
+    const response = await API.post(authentictaionRoutes.adminLogout, {}, { withCredentials: true });
+    console.log(response.data, "Logout response");
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Error during admin logout:", error.response?.data || error);
     throw error;
   }
 };
+
+
+
+
+
 

@@ -7,7 +7,9 @@ import UserRouters from "../../@types/endPoints/userEndPoints";
 
   export const getUserData = async (email: string | null): Promise<any> => {
     try {
-      const response = await API.get(`${UserRouters.getUserData}${email}`);
+      const response = await API.get(`${UserRouters.getUserData}${email}`,{
+        withCredentials : true 
+      });
     
       return response?.data;
     } catch (error) {
@@ -46,7 +48,9 @@ import UserRouters from "../../@types/endPoints/userEndPoints";
 
   export const getDoctorData = async (): Promise<any> => {
     try {
-      const response = await API.get(`${UserRouters.getAllDoctors}`);
+      const response = await API.get(`${UserRouters.getAllDoctors}`,{
+        withCredentials : true 
+      });
       return response?.data; 
     } catch (error) {
       console.log("Error fetching doctor data:", error);
@@ -55,7 +59,9 @@ import UserRouters from "../../@types/endPoints/userEndPoints";
   
   export const getDoctorDataById = async (): Promise<any> => {
     try {
-      const response = await API.get(`${UserRouters.getDoctorDataById}`);
+      const response = await API.get(`${UserRouters.getDoctorDataById}`,{
+        withCredentials : true 
+      });
       return response?.data; 
     } catch (error) {
       console.log("Error fetching doctor data:", error);

@@ -144,7 +144,7 @@ const Department: React.FC<DepartmentProps> = ({ isDarkMode }) => {
                           } transform hover:scale-110`}
                           title="Edit Department"
                         >
-                          <a href="/admin/editDepartment">
+                          <a href={`/admin/editDepartment/${dept.departmentName}`}>
                             <Pencil className="h-4 w-4" />
                           </a>
                         </button>

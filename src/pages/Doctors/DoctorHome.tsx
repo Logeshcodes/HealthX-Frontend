@@ -1,11 +1,18 @@
-import Banner from "../../components/UserComponents/Home/Banner";
+import DoctorBanner from "../../components/DoctorComponents/Banner";
+import DoctorCarousel from "../../components/UserComponents/Home/DoctorCarousel";
+import Departments from "../../components/UserComponents/Home/DepartmentList";
 
 
 
 const DoctorHome = () => {
     return (
       <>
-        <Banner />
+      
+        <DoctorBanner />
+        <DoctorCarousel/>
+        <div className="bg-blue-100 ">
+        <Departments/>
+        </div>
         
       </>
     );

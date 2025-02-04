@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { UserX, UserCheck, Search } from 'lucide-react';
+import { UserX, UserCheck } from 'lucide-react';
 import { getAllUser, blockUser } from '../../api/action/AdminActionApi';
 import { toast } from 'react-toastify';
-import { debounce } from 'lodash';
-import LoadingSpinner from '../../components/AdminComponents/LoadingSpinner';
 
 interface UserProps {
   isDarkMode: boolean;
@@ -13,118 +11,67 @@ interface User {
   id: string;
   name: string;
   email: string;
-  status: 'Blocked' | 'Unblocked';
+  status: 'Blocked' | 'Active';
   created: string;
 }
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 5;
 
 const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
   const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [actionLoading, setActionLoading] = useState<string | null>(null); // For specific action loading
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const userData = await getAllUser();
-        if (userData) {
-          const formattedUsers = userData.map((user: any) => ({
-            id: user._id,
-            name: user.name || 'N/A',
-            email: user.email,
-            status: user.isBlocked ? 'Blocked' : 'Unblocked',
-            created: new Date(user.createdAt).toLocaleDateString(),
-          }));
-          setUsers(formattedUsers);
-          setFilteredUsers(formattedUsers);
-        }
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
+      const userData = await getAllUser();
+      if (userData) {
+        const formattedUsers = userData.map((user: any) => ({
+          id: user._id,
+          name: user.name || 'N/A',
+          email: user.email,
+          status: user.isBlocked ? 'Blocked' : 'Active',
+          created: new Date(user.createdAt).toLocaleDateString('en-GB'),
+        }));
+        setUsers(formattedUsers);
       }
     };
 
     fetchUsers();
   }, []);
 
-  const handleSearch = debounce((query: string) => {
-    setSearchQuery(query);
-    setCurrentPage(1);
-    if (query.trim() === '') {
-      setFilteredUsers(users);
-    } else {
-      const filtered = users.filter(user =>
-        user.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredUsers(filtered);
-    }
-  }, 300);
-
-  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
   const handleBlock = useCallback(
     async (email: string) => {
-      setActionLoading(email); 
-      const updatedUsers = users.map((user : any) =>
-        user.email === email
-          ? { ...user, status: user.status === 'Blocked' ? 'Unblocked' : 'Blocked' }
-          : user
-      );
-      setUsers(updatedUsers); 
-
       try {
         const response = await blockUser(email);
         if (response.success) {
-          setTimeout(() => {
-            window.location.reload();
-          },5000);
           toast.success(response.message);
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.email === email ? { ...user, status: user.status === 'Blocked' ? 'Active' : 'Blocked' } : user
+            )
+          );
         } else {
-          throw new Error(response.message);
+          toast.error(response.message);
         }
       } catch (error: any) {
-        // Revert the optimistic UI update
-        setUsers(users);
         toast.error(error.message || 'Unknown Error Occurred!');
-      } finally {
-        setActionLoading(null); // Stop action-specific loading
       }
     },
-    [users]
+    []
   );
 
-  if (loading) {
-    return <LoadingSpinner message="Loading Users..." />;
-  }
+  // Pagination Logic
+  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
+  const paginatedUsers = users.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-blue-500">User List</h1>
-        </div>
-
-        <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search User"
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 bg-gray-800 border-gray-700 text-white w-full p-2 rounded-lg"
-            />
-          </div>
         </div>
 
         <div className={`rounded-lg overflow-hidden shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
@@ -166,19 +113,17 @@ const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
                     <td className="px-6 py-4">{user.created}</td>
                     <td className="px-6 py-4">
                       <div className="flex space-x-3">
+                        {/* Block/Unblock Toggle Button */}
                         <button
                           onClick={() => handleBlock(user.email)}
                           className={`p-2 rounded-full transition-all duration-200 ${
                             user.status === 'Blocked'
-                              ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                              : 'bg-green-100 text-green-600 hover:bg-green-200'
+                              ? 'bg-red-500 text-white-600 hover:bg-red-200'
+                              : 'bg-green-500 text-white-600 hover:bg-green-200 '
                           } transform hover:scale-110`}
                           title={user.status === 'Blocked' ? 'Unblock User' : 'Block User'}
-                          disabled={actionLoading === user.email}
                         >
-                          {actionLoading === user.email ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-gray-400" />
-                          ) : user.status === 'Blocked' ? (
+                          {user.status === 'Blocked' ? (
                             <UserX className="h-4 w-4" />
                           ) : (
                             <UserCheck className="h-4 w-4" />
@@ -198,9 +143,10 @@ const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
             </tbody>
           </table>
 
+          {/* Pagination Controls */}
           <div className="flex justify-between items-center py-4 px-6">
             <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50"
             >
@@ -210,7 +156,7 @@ const UserList: React.FC<UserProps> = ({ isDarkMode }) => {
               Page {currentPage} of {totalPages}
             </span>
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
               className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50"
             >

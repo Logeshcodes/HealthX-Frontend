@@ -3,8 +3,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getDepartmentById, updateDepartment } from '../../api/action/AdminActionApi';
-import { useNavigate, useParams } from 'react-router-dom';
+import { getDepartmentByName, updateDepartment } from '../../api/action/AdminActionApi';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { decodeURI } from '../../helpers/decodeURI';
 
 interface EditDepartmentFormProps {
   isDarkMode: boolean;
@@ -16,46 +17,83 @@ interface DepartmentFormValues {
 
 const EditDepartmentForm: React.FC<EditDepartmentFormProps> = ({ isDarkMode }) => {
   const [loader, setLoader] = useState(false);
-  const { id } = useParams<{ id: string }>();
+  const { departmentName } = useParams<{ departmentName: string }>();
   const navigate = useNavigate();
 
-  const fetchDepartmentDetails = useCallback(async () => {
-    setLoader(true);
-    try {
-      if (!id) return;
-      const response = await getDepartmentById(id);
-      if (response.success && response.data) {
-        formik.setValues({ departmentName: response.data.departmentName });
-      } else {
-        toast.error('Failed to fetch department details.');
-      }
-    } catch (error: any) {
-      toast.error(error.message || 'Unknown Error Occurred!');
-    } finally {
-      setLoader(false);
-    }
-  }, [id]);
+  
 
-  useEffect(() => {
-    fetchDepartmentDetails();
-  }, [fetchDepartmentDetails]);
 
-  const handleSubmit = useCallback(async (values: DepartmentFormValues) => {
-    try {
-      setLoader(true);
-      const response = await updateDepartment(id, values);
-      if (response.success) {
-        toast.success(response.message);
-        navigate('/admin/department');
-      } else {
-        toast.error(response.message);
+  // const fetchDepartmentDetails = useCallback(async () => {
+  //   setLoader(true);
+  //   try {
+  //     if (!departmentName) return;
+  //     console.log("dept name",departmentName)
+  //     const response = await getDepartmentByName(departmentName);
+  //     console.log(  "dept data ...",response )
+  //     if (response.success && response.data) {
+  //       formik.setValues({ departmentName: response.data.departmentName });
+  //     } else {
+  //       toast.error('Failed to fetch department details.');
+  //     }
+  //   } catch (error: any) {
+  //     toast.error(error.message || 'Unknown Error Occurred!');
+  //   } finally {
+  //     setLoader(false);
+  //   }
+  // }, [departmentName]);
+
+  // useEffect(() => {
+  //   fetchDepartmentDetails();
+  //   console.log("called")
+  //   console.log(fetchDepartmentDetails())
+
+  // }, []);
+
+  const location = useLocation(); // location is an object, not a string
+
+
+  useEffect(()=> {
+
+    const fetchDepartmentDetails = async()=> {
+      try {
+        const department = decodeURI(location.pathname.split('/').pop() || '');
+       
+        console.log("inside fetch dept",department)
+        const response = await getDepartmentByName(department)
+   
+         formik.setValues({ departmentName: response?.data[0].departmentName });
+        console.log(response)
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Unknown Error Occurred!');
-    } finally {
-      setLoader(false);
     }
-  }, [id, navigate]);
+    fetchDepartmentDetails()
+  },[])
+
+
+
+  const handleSubmit = useCallback(
+    async (values: DepartmentFormValues) => {
+      try {
+        setLoader(true);
+        const departmentName = decodeURI(location.pathname.split('/').pop() || '');
+        console.log(departmentName, "....")
+        console.log(values, "....")
+        const response = await updateDepartment(departmentName!, values);
+        if (response.success) {
+          toast.success(response.message);
+          navigate('/admin/department');
+        } else {
+          toast.error(response.message);
+        }
+      } catch (error: any) {
+        toast.error(error.message || 'Unknown Error Occurred!');
+      } finally {
+        setLoader(false);
+      }
+    },
+    [departmentName, navigate]
+  );
 
   const formik = useFormik({
     initialValues: {

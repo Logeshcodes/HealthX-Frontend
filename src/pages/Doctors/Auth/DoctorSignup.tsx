@@ -3,11 +3,11 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PasswordField from '../Users/common/passwordField';
-import InputField from '../Users/common/inputField';
-import { DoctorRegister } from '../../@types/DoctorSignupType';
-import { signup } from '../../api/auth/DoctorAuthentication';
-import Loader from '../../components/Common/Fallbacks/Loader';
+import PasswordField from "../../Users/common/passwordField";
+import InputField from '../../Users/common/inputField';
+import { DoctorRegister } from '../../../@types/DoctorSignupType';
+import { signup } from '../../../api/auth/DoctorAuthentication';
+import Loader from '../../../components/Common/Fallbacks/Loader';
 
 const DoctorSignup = () => {
 

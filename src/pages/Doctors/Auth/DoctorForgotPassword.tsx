@@ -3,10 +3,10 @@ import  { useState } from 'react';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import Loader from '../../components/Common/Fallbacks/Loader';
-import InputField from '../Users/common/inputField';
+import Loader from '../../../components/Common/Fallbacks/Loader';
+import InputField from '../../Users/common/inputField';
 import { useNavigate } from 'react-router-dom';
-import { verifyEmail } from '../../api/auth/DoctorAuthentication';
+import { verifyEmail } from '../../../api/auth/DoctorAuthentication';
 
 const DoctorForgotPassword = () => {
 
@@ -78,7 +78,7 @@ const DoctorForgotPassword = () => {
           validationSchema={emailSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting }) => (
+          {() => (
             <Form className="space-y-6 my-4 flex flex-col justify-center">
               {/* Email Field */}
               <div>

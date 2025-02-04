@@ -1,21 +1,42 @@
-import { configureStore } from "@reduxjs/toolkit";
-import {persistReducer,persistStore} from "redux-persist";
-import storage from "redux-persist/lib/storage";
+'use client';
 
-import userReducer from "./slices/userSlice"
+import { configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // Defaults to localStorage for web
+import { combineReducers } from 'redux';
+import userReducer from './slices/userSlice';
+import doctorReducer from './slices/DoctorSlice';
 
-const persistConfig = {
-    key: "root",
-    version:1,
-    storage,
-  };
+// Configure persistence
+const userPersistConfig = {
+  key: 'user',
+  storage,
+};
+// Configure persistence
+const doctorPersistConfig = {
+  key: 'doctor',
+  storage,
+};
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
-
-
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+// Combine reducers (for scalability)
+const rootReducer = combineReducers({
+  user: persistReducer(userPersistConfig, userReducer),
+  doctor: persistReducer(doctorPersistConfig, doctorReducer)
 });
+
+
+// Create store
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Required for redux-persist to work properly
+    }),
+});
+
+// Types for store
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
 export const persistor = persistStore(store);
+export default store;

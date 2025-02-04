@@ -3,8 +3,8 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
-import PasswordField from "../Users/common/passwordField";
-import { resetPassword } from "../../api/auth/DoctorAuthentication";
+import PasswordField from "../../Users/common/passwordField";
+import { resetPassword } from "../../../api/auth/DoctorAuthentication";
 
 const DoctorResetPassword = () => {
 
@@ -64,7 +64,7 @@ const DoctorResetPassword = () => {
           validationSchema={resetPasswordSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting }) => (
+          {() => (
             <Form className="space-y-6 my-4 flex flex-col justify-center">
              
               <div>
