@@ -3,10 +3,10 @@ import  { useState } from 'react';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import Loader from '../../components/Common/Fallbacks/Loader';
-import InputField from './common/inputField';
+import Loader from '../../../components/Common/Fallbacks/Loader';
+import InputField from '../../../components/UserComponents/common/inputField';
 import { useNavigate } from 'react-router-dom';
-import { verifyEmail } from '../../api/auth/UserAuthentication';
+import { verifyEmail } from '../../../api/auth/UserAuthentication';
 
 const ForgotPassword = () => {
 

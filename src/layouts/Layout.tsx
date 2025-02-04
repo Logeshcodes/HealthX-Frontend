@@ -4,13 +4,14 @@ import Footer from "../components/UserComponents/Footer";
 
 
 const Layout = () => {
-  return (
-    <>
-    <Header/>
-      <Outlet/>
-    <Footer/>
-    </>
-  )
+  
+    return (
+      <>
+        <Header/>
+          <Outlet/>
+        <Footer/>
+      </>
+    )
 }
 
 export default Layout

@@ -3,7 +3,7 @@ import * as Yup from "yup"
 import {toast} from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 
-import PasswordField from "../Users/common/passwordField";
+import PasswordField from "../../components/UserComponents/common/passwordField";
 import { adminLogin } from "../../api/auth/AdminAuthentication";
 
 

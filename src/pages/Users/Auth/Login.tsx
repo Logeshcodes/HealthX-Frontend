@@ -1,14 +1,14 @@
 
-import { Card } from "../../components/Card"
+import { Card } from "../../../components/Common/card/Card";
 import * as Yup from "yup"
 import { useDispatch } from "react-redux";
 import {toast} from 'react-toastify'
-import { login } from "../../api/auth/UserAuthentication"
-import { setUser } from "../../redux/slices/userSlice";
-import { Login } from "../../@types/LoginData";
+import { login } from "../../../api/auth/UserAuthentication";
+import { setUser } from "../../../redux/slices/userSlice";
+import { Login } from "../../../@types/LoginData";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import PasswordField from "./common/passwordField";
+import PasswordField from "../../../components/UserComponents/common/passwordField";
 
 
 // Validation Schema

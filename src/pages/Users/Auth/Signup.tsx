@@ -1,16 +1,16 @@
 import { useCallback, useState } from 'react';
-import { Card } from "../../components/Card"
+import { Card } from '../../../components/Common/card/Card';
 import * as Yup from "yup";
 
-import Loader from '../../components/Common/Fallbacks/Loader';
+import Loader from '../../../components/Common/Fallbacks/Loader';
 
 import { Formik, Form , Field } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import { signup } from '../../api/auth/UserAuthentication';
+import { signup } from '../../../api/auth/UserAuthentication';
 
-import { signUp } from '../../@types/SignupType';
+import { signUp } from '../../../@types/SignupType';
 
 
 // Validation Schema

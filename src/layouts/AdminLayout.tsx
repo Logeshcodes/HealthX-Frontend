@@ -31,7 +31,7 @@ const AdminLayout = () => {
     
   };
 
-  // Sidebar items with href
+ 
 const sidebarItems = [
   { id: "dashboard", label: "Dashboard", icon: Layout, href: "/admin/dashboard" },
   { id: "verifiedDoctors", label: "Verified Doctors", icon: UserCheck, href: "/admin/verifiedDoctors" },
@@ -61,8 +61,8 @@ const sidebarItems = [
           toggleSidebar={toggleSidebar}
           isDarkMode={isDarkMode}
           sidebarItems={sidebarItems}
-          activeTab={activeTab} // Pass activeTab for highlighting
-          handleNavigation={handleNavigation} // Pass handleNavigation for actions
+          activeTab={activeTab} 
+          handleNavigation={handleNavigation} 
         />
 
         {/* Main Content */}

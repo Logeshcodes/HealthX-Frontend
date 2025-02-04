@@ -4,7 +4,6 @@ import axios from 'axios';
 export const API = axios.create({
 
     baseURL: "http://localhost:5000",
-
     headers: {
       "Content-Type": "application/json",
       withCredentials: true,
@@ -19,10 +18,8 @@ export const API = axios.create({
       
       const verificationToken= localStorage.getItem("verificationToken");
   
-      if (verificationToken) {
-        config.headers["the-verify-token"] = verificationToken;
-      }
-      return config;
+    if (verificationToken) { config.headers["the-verify-token"] = verificationToken }
+        return config;
     },
 
     (error) => { console.log(error) }

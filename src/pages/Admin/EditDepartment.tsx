@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getDepartmentByName, updateDepartment } from '../../api/action/AdminActionApi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { decodeURI } from '../../helpers/decodeURI';
+import { decodeURI } from '../../utils/decodeURI';
 
 interface EditDepartmentFormProps {
   isDarkMode: boolean;

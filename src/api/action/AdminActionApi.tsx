@@ -4,21 +4,7 @@ import AdminRoutes from "../../@types/endPoints/adminEndPoints";
 
 import { deptData } from "../../@types/DeptDataType";
 
-// export const getAllUsers = async (): Promise<any> => {
-//     try {
-//       console.log("response getAllStudents11")
-//       const response = await API.get(AdminRoutes.adminGetUsers,{
-//         headers:{
-//           "Content-Type":"application/json"
-//         },
-//         withCredentials:true
-//       });
-//       console.log(response.data.users,"response getAllStudents")
-//       return response?.data?.users;
-//     } catch (error) {
-//       console.error("Error in updateProfile API call:", error);
-//     }
-//   };
+
   
   export const getAllDoctors = async (): Promise<any> => {
     try {

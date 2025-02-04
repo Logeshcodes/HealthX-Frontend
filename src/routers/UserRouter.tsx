@@ -1,18 +1,20 @@
 import { Suspense } from 'react';
-import BrickLoader from '../components/BrickLoader';
 import { Routes, Route } from 'react-router-dom';
+import BrickLoader from '../components/Common/Fallbacks/BrickLoader';
+
+import Home from '../pages/Users/Home';
+import SignupPage from '../pages/Users/Auth/Signup';
+import LoginPage from '../pages/Users/Auth/Login';
+import ForgotPassword from '../pages/Users/Auth/ForgotPassword';
+import OTPVerification from "../pages/Users/Auth/verifyOTP";
+import ResetVerificationOTP from '../pages/Users/Auth/ResetVerifyOTP';
+import ResetPassword from '../pages/Users/Auth/ResetPassword';
+import DoctorListingPage from '../pages/Users/Navbar/DoctorList';
+import About from '../pages/Users/Navbar/About';
 
 import Layout from '../layouts/Layout';
-import Home from '../pages/Users/Home';
-import SignupPage from '../pages/Users/Signup';
-import LoginPage from '../pages/Users/Login';
-import ForgotPassword from '../pages/Users/ForgotPassword';
-import OTPVerification from "../pages/Users/verifyOTP";
-import ResetVerificationOTP from '../pages/Users/ResetVerifyOTP';
-import ResetPassword from '../pages/Users/ResetPassword';
-import DoctorListingPage from '../pages/Users/DoctorList';
-import About from '../pages/Users/About';
-import PublicRoute from '../Protecter/PublicRoute';
+import PrivateRoute from '../Protecter/UserPrivateRoute';
+import NotFoundPage from '../pages/Users/NotFoundPage';
 
 
 
@@ -21,29 +23,35 @@ const UserRouter = () => {
     <Suspense fallback={<BrickLoader />}>
       <Routes>
 
-        {/* auth */}
+        {/* auth - Unprotected Route  */}
         
-        <Route path="/user/signup" element={  <PublicRoute><SignupPage /></PublicRoute>  } />
-        <Route path="/user/verify_otp" element={  <PublicRoute><OTPVerification /></PublicRoute>  } />
-        <Route path="/user/login" element={  <PublicRoute><LoginPage /></PublicRoute>  } />
-        <Route path="/user/verifyEmail" element={  <PublicRoute><ForgotPassword /></PublicRoute>  } />
-        <Route path="/user/forgot-password-otp" element={  <PublicRoute><ResetVerificationOTP /></PublicRoute>  } />
-        <Route path="/user/resetPassword" element={  <PublicRoute><ResetPassword /></PublicRoute>  } />
+        <Route path="/user/signup" element={  <SignupPage />  } />
+        <Route path="/user/verify_otp" element={  <OTPVerification /> } />
+        <Route path="/user/login" element={ <LoginPage /> } />
+        <Route path="/user/verifyEmail" element={  <ForgotPassword />  } />
+        <Route path="/user/forgot-password-otp" element={ <ResetVerificationOTP />  } />
+        <Route path="/user/resetPassword" element={ <ResetPassword /> } />
      
 
-        {/* auth */}
+        {/* auth - Unprotected Route  */}
 
 
 
         {/* nav-item */}
-        
-        <Route path="" element={<Layout />}>
+
+        <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/user/doctor_list" element={<DoctorListingPage />} />
-          <Route path="/user/about" element={<About />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/user/doctor_list" element={<DoctorListingPage />} />
+            <Route path="/user/about" element={<About />} />
+          </Route>
         </Route>
 
         {/* nav-item */}
+
+
+        {/* Catch-all Route for 404 */}
+        <Route path="*" element={<NotFoundPage />} />
 
         
       </Routes>

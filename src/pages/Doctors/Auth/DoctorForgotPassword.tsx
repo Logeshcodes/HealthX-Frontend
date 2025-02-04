@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import Loader from '../../../components/Common/Fallbacks/Loader';
-import InputField from '../../Users/common/inputField';
+import InputField from '../../../components/UserComponents/common/inputField';
 import { useNavigate } from 'react-router-dom';
 import { verifyEmail } from '../../../api/auth/DoctorAuthentication';
 

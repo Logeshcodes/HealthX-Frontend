@@ -1,15 +1,17 @@
 import { Routes, Route } from 'react-router-dom';
 import { Suspense } from 'react';
-import BrickLoader from '../components/BrickLoader';
+import BrickLoader from '../components/Common/Fallbacks/BrickLoader';
 import DoctorLogin from '../pages/Doctors/Auth/DoctorLogin';
 import DoctorSignup from '../pages/Doctors/Auth/DoctorSignup';
 import DoctorHome from '../pages/Doctors/DoctorHome';
 import DoctorVerificationOTP from '../pages/Doctors/Auth/DoctorOtpPage';
-import DoctorLayout from '../layouts/DoctorLayout';
 import DoctorForgotPassword from '../pages/Doctors/Auth/DoctorForgotPassword';
 import DoctorResetVerificationOTP from '../pages/Doctors/Auth/DoctorResetVerifyOTP';
 import DoctorResetPassword from '../pages/Doctors/Auth/DoctorResetPassword';
 
+import DoctorLayout from '../layouts/DoctorLayout';
+import PrivateRoute from '../Protecter/DoctorPrivateRoute';
+import NotFoundPage from '../pages/Doctors/NotFoundPage';
 
 import ProfileManagement from '../components/DoctorComponents/Profile/ProfileManagement';
 import MyAccount from '../components/DoctorComponents/Profile/MyAccount';
@@ -39,7 +41,10 @@ const DoctorRouter: React.FC = () => {
 
   return (
     <Suspense fallback={<BrickLoader />}>
+
       <Routes>
+
+
         {/* Auth Routes */}
         <Route path="register" element={<DoctorSignup />} />
         <Route path="verify_otp" element={<DoctorVerificationOTP />} />
@@ -54,19 +59,22 @@ const DoctorRouter: React.FC = () => {
         {/* Protected Routes with Layout */}
         <Route path="/" element={<DoctorLayout />}>
           <Route path="" element={<DoctorHome />} />
-          <Route path="/profile" element={<ProfileManagement />}>
-            <Route path="my-account" element={<MyAccount userData={userData} />} />
-            <Route path="change-password" element={<ChangePassword />} />
-            <Route path="account-status" element={<AccountStatus userData={userData} />} />
-            <Route path="verify-profile" element={< VerifyProfile />} />
-            <Route path="edit-profile" element={<EditProfile userData={userData}/>} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<ProfileManagement />}>
+              <Route path="my-account" element={<MyAccount userData={userData} />} />
+              <Route path="change-password" element={<ChangePassword />} />
+              <Route path="account-status" element={<AccountStatus userData={userData} />} />
+              <Route path="verify-profile" element={< VerifyProfile />} />
+              <Route path="edit-profile" element={<EditProfile userData={userData}/>} />
+            </Route>
           </Route>
         </Route>
 
 
 
           
-        
+        {/* Catch-all Route for 404 */}
+        <Route path="*" element={<NotFoundPage />} />
         
 
 

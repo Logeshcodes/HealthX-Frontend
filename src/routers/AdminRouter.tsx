@@ -1,18 +1,17 @@
 import { Routes, Route } from "react-router-dom";
-import { Suspense } from "react";
+import { useState , Suspense  } from "react";
+import BrickLoader from "../components/Common/Fallbacks/BrickLoader";
 import AdminLogin from "../pages/Admin/AdminLogin";
-import BrickLoader from "../components/BrickLoader";
 import Dashboard from "../pages/Admin/Dashboard";
 import Department from "../pages/Admin/Department";
 import UserList from "../pages/Admin/UserList";
-import EditDepartmentForm from "../pages/Admin/EditDepartment";
-import { useState } from "react";
-import AdminLayout from "../layouts/AdminLayout";
 import AddDepartmentForm from "../pages/Admin/AddDepartment";
+import EditDepartmentForm from "../pages/Admin/EditDepartment";
 import DoctorsListTable from "../pages/Admin/VerifiedDoctorList";
 import RequestedDoctorList from "../pages/Admin/RequestedDoctorList";
-import PrivateRoute from "../Protecter/AdminPrivateRoute";
 
+import AdminLayout from "../layouts/AdminLayout";
+import PrivateRoute from "../Protecter/AdminPrivateRoute";
 import NotFoundPage from "../pages/Admin/NotFoundPage";
 
 const AdminRouter = () => {

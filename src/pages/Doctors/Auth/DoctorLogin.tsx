@@ -1,8 +1,8 @@
-import { Card } from "../../../components/Card";
+import { Card } from "../../../components/Common/card/Card";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Formik, Form, Field } from "formik";
-import PasswordField from "../../Users/common/passwordField";
+import PasswordField from "../../../components/UserComponents/common/passwordField";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../../../@types/LoginData";

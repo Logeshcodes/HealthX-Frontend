@@ -6,17 +6,12 @@ import authentictaionRoutes from "../../@types/endPoints/authEndPoints";
 
 export const adminLogin = async (userData: userData): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.adminLogin, userData, {
-      withCredentials: true,
-    });
+    const response = await API.post(authentictaionRoutes.adminLogin, userData, { withCredentials: true });
     console.log(response.data, "admin response");
-
     return response.data;
   } catch (error: any) {
-    if (error.response.status === 404) {
-      throw error;
-    }
-    console.log(error.message);
+    console.error("Error during admin logout:", error.response?.data || error);
+    throw error;
   }
 };
 

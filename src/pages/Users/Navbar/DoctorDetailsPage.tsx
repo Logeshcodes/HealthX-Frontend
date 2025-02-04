@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getDoctorDataById } from '../../api/action/UserActionApi'; 
+import { getDoctorDataById } from '../../../api/action/UserActionApi'; 
 
 const DoctorDetailPage = () => {
   const { doctorId } = useParams();
